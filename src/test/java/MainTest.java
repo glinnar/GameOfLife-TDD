@@ -4,18 +4,21 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 
+
 class MainTest {
 
-    Gameboard gameboard = new Gameboard();
+    Gameboard gameboard = new Gameboard(20,20);
     @Test
-    void testMain(){
-        assertTrue(false);
-
-    }
-    @Test
-    void makeSureGameBoardIsNotEmpty(){
+    void makeSureGameBoardObjectIsNotEmpty(){
 
        assertNotNull(gameboard);
+    }
+
+    @Test
+    void printOutGameBoard(){
+
+        gameboard.printGameBoard();
+
     }
 
 }
