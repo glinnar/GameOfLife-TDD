@@ -31,9 +31,9 @@ class MainTest {
     @Test
     void addLivingCellsToGameBoard(){
         gameboard.addCells(0,0);
-        gameboard.addCells(1,6);
-        gameboard.addCells(2,5);
-        gameboard.addCells(3,8);
+        gameboard.addCells(2,2);
+        gameboard.addCells(3,2);
+        gameboard.addCells(4,2);
         gameboard.addCells(4,9);
         gameboard.addCells(5,1);
         gameboard.addCells(6,2);
@@ -51,7 +51,15 @@ class MainTest {
 
     @Test
     void checkAmountofAliveCellsMatchesCellsCreated(){
-        assertEquals(7 , gameboard.getLivingCellsAmount());
+
+        gameboard.addCells(2,2);
+        gameboard.addCells(3,2);
+        gameboard.addCells(4,2);
+        gameboard.printGameBoard();
+
+        System.out.println(gameboard.getLivingCellsAmount(3,2));
+
+         assertEquals(2 , gameboard.getLivingCellsAmount(3,2));
     }
 
 }

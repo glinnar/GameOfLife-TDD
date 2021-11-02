@@ -57,10 +57,29 @@ generation.
         System.out.println("---\n");
     }
 
-    public void addCells(int x , int y){
+    public void addCells(int x, int y) {
         this.board[x][y] = 1;
+    }
 
+    public void deleteCells(int x, int y) {
+        this.board[x][y] = 0;
+    }
 
+    public int getLivingCellsAmount(int x, int y) {
+        int amount = 0;
+
+        amount += this.board[x - 1][y - 1];
+        amount += this.board[x][y - 1];
+        amount += this.board[x + 1][y - 1];
+
+        amount += this.board[x - 1][y];
+        amount += this.board[x + 1][y];
+
+        amount += this.board[x - 1][y + 1];
+        amount += this.board[x][y + 1];
+        amount += this.board[x + 1][y + 1];
+
+        return amount;
     }
 
 
