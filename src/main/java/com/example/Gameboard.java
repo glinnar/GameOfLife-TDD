@@ -1,14 +1,13 @@
 package com.example;
 
-public class Gameboard {
+public final class Gameboard {
 
 
-    private int boardWidth;
-    private int boardHeight;
+    private final int boardWidth;
+    private final int boardHeight;
     private int[][] board;
-    public final static int ALIVE = 1;
-    public final static int DEAD = 0;
-
+    public static final int ALIVE = 1;
+    public static final int DEAD = 0;
 
     public Gameboard(int width, int height) {
         this.boardWidth = width;
@@ -30,21 +29,21 @@ public class Gameboard {
 
 
     public void printGameBoard() {
-        System.out.println("---");
+
         for (int y = 0; y < boardHeight; y++) {
-            String line = "|";
+            String boardLines = "|";
             for (int x = 0; x < boardHeight; x++) {
                 if (this.board[x][y] == 0) {
-                    line += ".";
+                    boardLines += ".";
                 } else {
-                    line += "*";
+                    boardLines += "*";
                 }
             }
-            line += "|";
-            System.out.println(line);
+            boardLines += "|";
+            System.out.println(boardLines);
 
         }
-        System.out.println("---\n");
+        System.out.println("\n");
     }
 
 
@@ -84,43 +83,6 @@ public class Gameboard {
         return this.board[x][y];
     }
 
-    public void generateNewGenearationOfCells() {
-
-        int[][] newBoard = new int[boardWidth][boardHeight];
-
-        for (int y = 0; y < boardHeight; y++) {
-            for (int x = 0; x < boardWidth; x++) {
-
-                // if (cellExistWithinBoard(x, y) == 1) {
-
-                //thisCellIsAliveAndHasLessThanTwoLivingNeighbours(y, x
-                if (cellIsAliveAndHaslessThanTwoLivingCellsCloseBy(x, y)) {
-                    newBoard[x][y] = DEAD;
-
-                    //thisCellIsAliveAndHasTwoOrThreeLivingNeighbours(y, x)
-                } else if (cellHas2Or3LivingCellsCloseby(x, y)) {
-                    newBoard[x][y] = ALIVE;
-
-                    //(thisCellIsAliveAndHasMoreThanThreeLivingNeighbours(y, x)) {
-                } else if (cellIsAliveAndHasMoreThanThreeLivingCellsCloseBy(x, y)) {
-                    newBoard[x][y] = DEAD;
-
-                } else if (cellIsDeadWithTreeLivingCellsCloseBy(x, y)) {
-                    newBoard[x][y] = ALIVE;
-
-                }
-                else{
-                    newBoard[x][y] = board[x][y];
-                }
-
-                //(thisCellIsDeadAndHasThreeLivingNeighbours(y, x)
-            }
-        }
-        //}
-        board = newBoard;
-    }
-
-
     public boolean cellIsAlive(int x, int y) {
 
         return board[x][y] == ALIVE;
@@ -135,6 +97,7 @@ public class Gameboard {
     private boolean cellIsDeadWithTreeLivingCellsCloseBy(int x, int y) {
         int livingCellsCloseBy = getLivingCellsCloseBy(x, y);
 
+
         return cellIsDead(x, y) && livingCellsCloseBy == 3;
     }
 
@@ -145,16 +108,46 @@ public class Gameboard {
 
     }
 
-    private boolean cellHas2Or3LivingCellsCloseby(int x, int y) {
+    private boolean cellHasTwoOrThreeLivingCellsCloseBy(int x, int y) {
         int livingCellsCloseBy = getLivingCellsCloseBy(x, y);
 
         return cellIsAlive(x, y) && (livingCellsCloseBy == 2 || livingCellsCloseBy == 3);
     }
 
-    private boolean cellIsAliveAndHaslessThanTwoLivingCellsCloseBy(int x, int y) {
+    private boolean cellIsAliveAndHasLessThanTwoLivingCellsCloseBy(int x, int y) {
         int livingCellsCloseBy = getLivingCellsCloseBy(x, y);
 
         return cellIsAlive(x, y) && livingCellsCloseBy < 2;
+    }
+
+    public void generateNewGenerationOfCells() {
+
+        int[][] newBoard = new int[boardWidth][boardHeight];
+
+        for (int y = 0; y < boardHeight; y++) {
+            for (int x = 0; x < boardWidth; x++) {
+
+
+                if (cellIsAliveAndHasLessThanTwoLivingCellsCloseBy(x, y)) {
+                    newBoard[x][y] = DEAD;
+
+                } else if (cellHasTwoOrThreeLivingCellsCloseBy(x, y)) {
+                    newBoard[x][y] = ALIVE;
+
+
+                } else if (cellIsAliveAndHasMoreThanThreeLivingCellsCloseBy(x, y)) {
+                    newBoard[x][y] = DEAD;
+
+                } else if (cellIsDeadWithTreeLivingCellsCloseBy(x, y)) {
+                    newBoard[x][y] = ALIVE;
+
+                } else {
+                    newBoard[x][y] = board[x][y];
+                }
+
+            }
+        }
+        board = newBoard;
     }
 
 

@@ -2,7 +2,7 @@ package com.example;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world");
+
 
         Gameboard gameboard = new Gameboard(8, 5);
 
@@ -16,8 +16,8 @@ public class Main {
 
         gameboard.printGameBoard();
 
-        for (int i = 0; i <= 4; i++) {
-            gameboard.generateNewGenearationOfCells();
+        for (int i = 0; i <= 5; i++) {
+            gameboard.generateNewGenerationOfCells();
 
             gameboard.printGameBoard();
 
