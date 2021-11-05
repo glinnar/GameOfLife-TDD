@@ -1,7 +1,5 @@
 package com.example;
 
-import java.util.Arrays;
-
 public class Gameboard {
 
 
@@ -18,12 +16,15 @@ generation.
     * */
     private int boardWidth;
     private int boardHeight;
-    int[][] board;
+    private int[][] board;
+    public final static int ALIVE = 1;
+    public final static int DEAD = 0;
+
 
     public Gameboard(int width, int height) {
         this.boardWidth = width;
         this.boardHeight = height;
-        this.board = new int[width][height];
+         this.board= new int[width][height];
     }
 
     public int getBoardWidth() {
@@ -57,30 +58,91 @@ generation.
         System.out.println("---\n");
     }
 
-    public void addCells(int x, int y) {
-        this.board[x][y] = 1;
+
+    public void addLivingCells(int x, int y) {
+        board[x][y] = ALIVE;
     }
 
-    public void deleteCells(int x, int y) {
-        this.board[x][y] = 0;
+    public void deleteLivingCells(int x, int y) {
+        board[x][y] = DEAD;
     }
 
-    public int getLivingCellsAmount(int x, int y) {
+    public int getLivingCellsCloseBy(int x, int y) {
         int amount = 0;
 
-        amount += this.board[x - 1][y - 1];
-        amount += this.board[x][y - 1];
-        amount += this.board[x + 1][y - 1];
+        amount += cellExistWithinBoard(x - 1, y - 1);
+        amount += cellExistWithinBoard(x, y - 1);
+        amount += cellExistWithinBoard(x + 1, y - 1);
 
-        amount += this.board[x - 1][y];
-        amount += this.board[x + 1][y];
+        amount += cellExistWithinBoard(x - 1, y);
+        amount += cellExistWithinBoard(x + 1, y);
 
-        amount += this.board[x - 1][y + 1];
-        amount += this.board[x][y + 1];
-        amount += this.board[x + 1][y + 1];
+        amount += cellExistWithinBoard(x - 1, y + 1);
+        amount += cellExistWithinBoard(x, y + 1);
+        amount += cellExistWithinBoard(x + 1, y + 1);
 
         return amount;
     }
+
+    public int cellExistWithinBoard(int x, int y) {
+        if (x < 0 || x >= boardWidth) {
+            return 0;
+        } else {
+            if (y < 0 || y >= boardHeight) {
+                return 0;
+            }
+        }
+        return this.board[x][y];
+    }
+
+    public void generateNewGenearationOfCells() {
+
+        int[][] newBoard = new int[boardWidth][boardHeight];
+
+        for (int y = 0; y < boardHeight; y++) {
+            for (int x = 0; x < boardWidth; x++) {
+
+                int aliveNeighbours = getLivingCellsCloseBy(x, y);
+
+                if (cellExistWithinBoard(x, y) == 1) {
+                    if (aliveNeighbours < 2) {
+                        newBoard[x][y] = DEAD;
+                    } else if (aliveNeighbours == 2 || aliveNeighbours == 3) {
+                        newBoard[x][y] = ALIVE;
+                    } else {
+                        newBoard[x][y] = DEAD;
+                    }
+                } else {
+                    if (aliveNeighbours == 3) {
+                        newBoard[x][y] = ALIVE;
+                    }
+                }
+            }
+        }
+        board = newBoard;
+    }
+
+
+    public boolean cellIsAlive(int x, int y) {
+
+        return board[x][y] == ALIVE;
+    }
+
+    public boolean cellIsDead(int x, int y) {
+        return board[x][y] == DEAD;
+
+
+    }
+
+    public boolean cellIsDeadWithTreeLivingCellsCloseBy(int x, int y){
+        int livingCellsCloseBy = getLivingCellsCloseBy(x,y);
+
+        return cellIsDead(x,y) && livingCellsCloseBy == 3;
+    }
+
+//    public boolean cellIsAliveAndHasMoreThanThreeLivingCellsCloseBy(int x , int y){
+//
+//    }
 
 
 }

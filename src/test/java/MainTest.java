@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MainTest {
 
-    Gameboard gameboard = new Gameboard(10,10);
+    Gameboard gameboard = new Gameboard(5,5);
     @Test
     void makeSureGameBoardObjectIsNotEmpty(){
 
@@ -23,43 +23,62 @@ class MainTest {
 
         gameboard.printGameBoard();
 
-        assertEquals(10,gameboard.getBoardWidth());
-        assertEquals(10,gameboard.getBoardHeight());
+        assertEquals(5,gameboard.getBoardWidth());
+        assertEquals(5,gameboard.getBoardHeight());
 
 
     }
     @Test
     void addLivingCellsToGameBoard(){
-        gameboard.addCells(0,0);
-        gameboard.addCells(2,2);
-        gameboard.addCells(3,2);
-        gameboard.addCells(4,2);
-        gameboard.addCells(4,9);
-        gameboard.addCells(5,1);
-        gameboard.addCells(6,2);
+        gameboard.addLivingCells(0,0);
+        gameboard.addLivingCells(2,2);
+        gameboard.addLivingCells(3,2);
 
-        //assertNotNull(gameboard.getBoard());
+        
         gameboard.printGameBoard();
 
         String count = Arrays.deepToString(gameboard.getBoard());
         System.out.println(count);
 
-        assertThat(gameboard.getBoard()).isNotEmpty();
+        assertThat(gameboard.cellExistWithinBoard(3,2)).isEqualTo(1);
 
-       // assertThat(cellCount).isEqualTo(0);
     }
 
     @Test
-    void checkAmountofAliveCellsMatchesCellsCreated(){
+    void checkAmountOfNearByLivingCells(){
 
-        gameboard.addCells(2,2);
-        gameboard.addCells(3,2);
-        gameboard.addCells(4,2);
+        gameboard.addLivingCells(2,2);
+        gameboard.addLivingCells(3,2);
+        gameboard.addLivingCells(4,2);
         gameboard.printGameBoard();
 
-        System.out.println(gameboard.getLivingCellsAmount(3,2));
+        System.out.println(gameboard.getLivingCellsCloseBy(3,2));
 
-         assertEquals(2 , gameboard.getLivingCellsAmount(3,2));
+         assertEquals(2 , gameboard.getLivingCellsCloseBy(3,2));
+    }
+
+    @Test
+    void checkIfCellIsAlive(){
+        gameboard.addLivingCells(2,2);
+        assertThat(gameboard.cellExistWithinBoard(2,2)).isEqualTo(1);
+    }
+
+    @Test
+    void checkIfCellIsDead(){
+        gameboard.addLivingCells(2,2);
+        gameboard.addLivingCells(3,2);
+        gameboard.addLivingCells(4,2);
+        gameboard.printGameBoard();
+
+       gameboard.deleteLivingCells(4,2);
+
+       boolean deadcell = gameboard.cellIsDead(4,2);
+        assertThat(deadcell).isTrue();
+        gameboard.printGameBoard();
+    }
+    @Test
+    void genereateBoardWithNewGenerationOfCells(){
+
     }
 
 }
