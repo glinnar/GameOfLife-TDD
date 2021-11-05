@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,7 +35,7 @@ class MainTest {
         gameboard.addLivingCells(2,2);
         gameboard.addLivingCells(3,2);
 
-        
+
         gameboard.printGameBoard();
 
         String count = Arrays.deepToString(gameboard.getBoard());
@@ -45,7 +46,7 @@ class MainTest {
     }
 
     @Test
-    void checkAmountOfNearByLivingCells(){
+    void checkThatAmountOfNearByLivingCellsIsCorrectShouldReturnTwo(){
 
         gameboard.addLivingCells(2,2);
         gameboard.addLivingCells(3,2);
@@ -60,7 +61,10 @@ class MainTest {
     @Test
     void checkIfCellIsAlive(){
         gameboard.addLivingCells(2,2);
-        assertThat(gameboard.cellExistWithinBoard(2,2)).isEqualTo(1);
+        gameboard.addLivingCells(3,2);
+        gameboard.addLivingCells(4,2);
+
+        assertThat(gameboard.cellIsAlive(2,2)).isTrue();
     }
 
     @Test
@@ -77,8 +81,35 @@ class MainTest {
         gameboard.printGameBoard();
     }
     @Test
-    void genereateBoardWithNewGenerationOfCells(){
+    void generateBoardWithNewGenerationOfCells(){
+
+        gameboard.addLivingCells(2,2);
+        gameboard.addLivingCells(3,2);
+        gameboard.addLivingCells(4,2);
+
+        gameboard.printGameBoard();
+        String firstGen = Arrays.deepToString(gameboard.getBoard());
+
+        System.out.println(firstGen);
+        gameboard.generateNewGenearationOfCells();
+
+        String secondGen = Arrays.deepToString(gameboard.getBoard());
+
+        System.out.println(secondGen);
+
+        assertThat(secondGen).isNotEqualTo(firstGen);
 
     }
+
+    @Test
+    void checkThatCellIsInTheGameBoard(){
+        gameboard.addLivingCells(4,2);
+
+        assertThat(gameboard.cellExistWithinBoard(4,2)).isNotZero();
+    }
+
+
+
+
 
 }

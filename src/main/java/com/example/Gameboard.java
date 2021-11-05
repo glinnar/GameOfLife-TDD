@@ -3,17 +3,6 @@ package com.example;
 public class Gameboard {
 
 
-    /*
-     1. Any live cell with fewer than two live neighbors dies, as if caused by
-underpopulation.
- 2. Any live cell with more than three live neighbors dies, as if by
-overcrowding.
- 3. Any live cell with two or three live neighbors lives on to the next
-generation.
- 4. Any dead cell with exactly three live neighbors becomes a live cell.
-    *
-    *
-    * */
     private int boardWidth;
     private int boardHeight;
     private int[][] board;
@@ -24,7 +13,7 @@ generation.
     public Gameboard(int width, int height) {
         this.boardWidth = width;
         this.boardHeight = height;
-         this.board= new int[width][height];
+        this.board = new int[width][height];
     }
 
     public int getBoardWidth() {
@@ -102,23 +91,32 @@ generation.
         for (int y = 0; y < boardHeight; y++) {
             for (int x = 0; x < boardWidth; x++) {
 
-                int aliveNeighbours = getLivingCellsCloseBy(x, y);
+                // if (cellExistWithinBoard(x, y) == 1) {
 
-                if (cellExistWithinBoard(x, y) == 1) {
-                    if (aliveNeighbours < 2) {
-                        newBoard[x][y] = DEAD;
-                    } else if (aliveNeighbours == 2 || aliveNeighbours == 3) {
-                        newBoard[x][y] = ALIVE;
-                    } else {
-                        newBoard[x][y] = DEAD;
-                    }
-                } else {
-                    if (aliveNeighbours == 3) {
-                        newBoard[x][y] = ALIVE;
-                    }
+                //thisCellIsAliveAndHasLessThanTwoLivingNeighbours(y, x
+                if (cellIsAliveAndHaslessThanTwoLivingCellsCloseBy(x, y)) {
+                    newBoard[x][y] = DEAD;
+
+                    //thisCellIsAliveAndHasTwoOrThreeLivingNeighbours(y, x)
+                } else if (cellHas2Or3LivingCellsCloseby(x, y)) {
+                    newBoard[x][y] = ALIVE;
+
+                    //(thisCellIsAliveAndHasMoreThanThreeLivingNeighbours(y, x)) {
+                } else if (cellIsAliveAndHasMoreThanThreeLivingCellsCloseBy(x, y)) {
+                    newBoard[x][y] = DEAD;
+
+                } else if (cellIsDeadWithTreeLivingCellsCloseBy(x, y)) {
+                    newBoard[x][y] = ALIVE;
+
                 }
+                else{
+                    newBoard[x][y] = board[x][y];
+                }
+
+                //(thisCellIsDeadAndHasThreeLivingNeighbours(y, x)
             }
         }
+        //}
         board = newBoard;
     }
 
@@ -134,15 +132,30 @@ generation.
 
     }
 
-    public boolean cellIsDeadWithTreeLivingCellsCloseBy(int x, int y){
-        int livingCellsCloseBy = getLivingCellsCloseBy(x,y);
+    private boolean cellIsDeadWithTreeLivingCellsCloseBy(int x, int y) {
+        int livingCellsCloseBy = getLivingCellsCloseBy(x, y);
 
-        return cellIsDead(x,y) && livingCellsCloseBy == 3;
+        return cellIsDead(x, y) && livingCellsCloseBy == 3;
     }
 
-//    public boolean cellIsAliveAndHasMoreThanThreeLivingCellsCloseBy(int x , int y){
-//
-//    }
+    private boolean cellIsAliveAndHasMoreThanThreeLivingCellsCloseBy(int x, int y) {
+        int livingCellsCloseBy = getLivingCellsCloseBy(x, y);
+
+        return cellIsAlive(x, y) && livingCellsCloseBy > 3;
+
+    }
+
+    private boolean cellHas2Or3LivingCellsCloseby(int x, int y) {
+        int livingCellsCloseBy = getLivingCellsCloseBy(x, y);
+
+        return cellIsAlive(x, y) && (livingCellsCloseBy == 2 || livingCellsCloseBy == 3);
+    }
+
+    private boolean cellIsAliveAndHaslessThanTwoLivingCellsCloseBy(int x, int y) {
+        int livingCellsCloseBy = getLivingCellsCloseBy(x, y);
+
+        return cellIsAlive(x, y) && livingCellsCloseBy < 2;
+    }
 
 
 }
