@@ -99,7 +99,7 @@ class MainTest {
     }
 
     @Test
-    void checkThatCellLivesOnToNextGeneration(){
+    void checkThatCellLivesOnToNextGeneration() {
         gameboard.addLivingCells(2, 2);
         gameboard.addLivingCells(3, 2);
         gameboard.addLivingCells(4, 2);
@@ -110,12 +110,12 @@ class MainTest {
 
         gameboard.printGameBoard();
 
-        assertThat(gameboard.cellIsAlive(3,2)).isTrue();
+        assertThat(gameboard.cellIsAlive(3, 2)).isTrue();
 
     }
 
     @Test
-    void checkThatCellDiesNextGeneration(){
+    void checkThatCellDiesNextGeneration() {
         gameboard.addLivingCells(2, 2);
         gameboard.addLivingCells(3, 2);
         gameboard.addLivingCells(4, 2);
@@ -128,7 +128,51 @@ class MainTest {
 
         gameboard.printGameBoard();
 
-        assertThat(gameboard.cellIsDead(2,4)).isTrue();
+        assertThat(gameboard.cellIsDead(2, 4)).isTrue();
+
+    }
+
+    @Test
+    void checkThatCellDiesNextGenerationWhenItHasMoreThanThreeLivingCellsCloseBy() {
+
+        gameboard.addLivingCells(2, 2);
+        gameboard.addLivingCells(3, 2);
+        gameboard.addLivingCells(4, 2);
+
+        gameboard.addLivingCells(4, 3);
+
+        gameboard.addLivingCells(1, 3);
+        gameboard.addLivingCells(2, 3);
+        gameboard.addLivingCells(3, 3);
+
+        gameboard.addLivingCells(2, 4);
+        gameboard.addLivingCells(3, 4);
+        gameboard.addLivingCells(4, 4);
+        gameboard.printGameBoard();
+
+        gameboard.generateNewGenerationOfCells();
+
+        gameboard.printGameBoard();
+
+        assertThat(gameboard.cellIsDead(4, 3)).isTrue();
+
+
+    }
+
+    @Test
+    void checkThatADeadCellWithExactlyThreeLivingCellsCloseByBecomesAlive() {
+
+        gameboard.addLivingCells(1, 4);
+        gameboard.addLivingCells(2, 4);
+        gameboard.addLivingCells(3, 4);
+
+        gameboard.printGameBoard();
+
+        gameboard.generateNewGenerationOfCells();
+
+        gameboard.printGameBoard();
+
+        assertThat(gameboard.cellIsAlive(2, 3)).isTrue();
 
     }
 

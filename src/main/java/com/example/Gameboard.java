@@ -92,29 +92,28 @@ public final class Gameboard {
         return board[x][y] == DEAD;
 
 
+
     }
 
-    private boolean cellIsDeadWithTreeLivingCellsCloseBy(int x, int y) {
+    private boolean aCellThatIsDeadAndHasExactlyTreeLivingCellsCloseBy(int x, int y) {
         int livingCellsCloseBy = getLivingCellsCloseBy(x, y);
-
 
         return cellIsDead(x, y) && livingCellsCloseBy == 3;
     }
 
-    private boolean cellIsAliveAndHasMoreThanThreeLivingCellsCloseBy(int x, int y) {
+    private boolean aCellThatIsAliveAndHasMoreThanThreeLivingCellsCloseBy(int x, int y) {
         int livingCellsCloseBy = getLivingCellsCloseBy(x, y);
 
         return cellIsAlive(x, y) && livingCellsCloseBy > 3;
-
     }
 
-    private boolean cellHasTwoOrThreeLivingCellsCloseBy(int x, int y) {
+    private boolean aCellThatHasTwoOrThreeLivingCellsCloseBy(int x, int y) {
         int livingCellsCloseBy = getLivingCellsCloseBy(x, y);
 
         return cellIsAlive(x, y) && (livingCellsCloseBy == 2 || livingCellsCloseBy == 3);
     }
 
-    private boolean cellIsAliveAndHasLessThanTwoLivingCellsCloseBy(int x, int y) {
+    private boolean aCellThatIsAliveAndHasLessThanTwoLivingCellsCloseBy(int x, int y) {
         int livingCellsCloseBy = getLivingCellsCloseBy(x, y);
 
         return cellIsAlive(x, y) && livingCellsCloseBy < 2;
@@ -128,17 +127,17 @@ public final class Gameboard {
             for (int x = 0; x < boardWidth; x++) {
 
 
-                if (cellIsAliveAndHasLessThanTwoLivingCellsCloseBy(x, y)) {
+                if (aCellThatIsAliveAndHasLessThanTwoLivingCellsCloseBy(x, y)) {
                     newBoard[x][y] = DEAD;
 
-                } else if (cellHasTwoOrThreeLivingCellsCloseBy(x, y)) {
+                } else if (aCellThatHasTwoOrThreeLivingCellsCloseBy(x, y)) {
                     newBoard[x][y] = ALIVE;
 
 
-                } else if (cellIsAliveAndHasMoreThanThreeLivingCellsCloseBy(x, y)) {
+                } else if (aCellThatIsAliveAndHasMoreThanThreeLivingCellsCloseBy(x, y)) {
                     newBoard[x][y] = DEAD;
 
-                } else if (cellIsDeadWithTreeLivingCellsCloseBy(x, y)) {
+                } else if (aCellThatIsDeadAndHasExactlyTreeLivingCellsCloseBy(x, y)) {
                     newBoard[x][y] = ALIVE;
 
                 } else {
